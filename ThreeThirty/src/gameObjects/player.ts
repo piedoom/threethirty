@@ -12,6 +12,7 @@
         inventory: Array<IItem> = new Array<IItem>();
         equipped: Array<IItem> = new Array<IItem>();
         engine: IEngine;
+        weapon: IWeapon;
 
         constructor(game: Phaser.Game, x: number, y: number) {
             super(game, x, y, 'player', 1);
@@ -19,11 +20,15 @@
             // initial inventory / ship population
             this.ship = new Ship();
             var engine = new DefaultEngine();
+            var weapon = new DefaultWeapon();
             this.inventory.push(engine);
+            this.inventory.push(weapon);
+            this.equip(weapon);
             this.equip(engine);
 
             // default stuff
             this.cursors = this.game.input.keyboard.createCursorKeys();
+            this.game.input.keyboard.addKey(32).onDown.add(this.shoot.bind(this));
             this.anchor.setTo(0.5);
             this.game = game;
             game.add.existing(this);
@@ -64,6 +69,12 @@
             
         }
 
+        shoot() {
+            if (this.weapon != undefined) {
+                this.weapon.fire(this.game, this)
+            }
+        }
+
         // set an item to be equipped 
         equip(item: IItem) {
             // make sure item exists in our inventory
@@ -85,6 +96,10 @@
             // typescript doesn't allow us to check interfaces sanely for some stupid reason so....
             if (targetItem.isEngine) {
                 this.engine = targetItem;
+            }
+
+            if (targetItem.isWeapon) {
+                this.weapon = targetItem;
             }
 
             // finally, equip our item for UI purposes

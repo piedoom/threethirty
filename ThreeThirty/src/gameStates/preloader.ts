@@ -12,6 +12,7 @@
             this.load.image('titlepage', './assets/ui/titlePage.png');
             this.load.image('logo', './assets/ui/gameLogo.png');
             this.load.audio('click', './assets/sounds/click.ogg', true);
+            
 
             this.load.atlasJSONHash('level01-sprites', './assets/sprites/level01-sprites.png', './assets/sprites/level01-sprites.json');
         }

@@ -12,6 +12,7 @@
         preload() {
             this.load.image("starBackground", "./assets/backgrounds/stars.png");
             this.load.image("player", "./assets/sprites/ship.png");
+            this.load.image('defaultProjectile', "./assets/sprites/bullet.png");
         }
 
         create() {

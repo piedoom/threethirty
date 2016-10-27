@@ -54,9 +54,13 @@ var ThreeThirty;
                 this.equipped = new Array();
                 this.ship = new Client.Ship();
                 var engine = new Client.DefaultEngine();
+                var weapon = new Client.DefaultWeapon();
                 this.inventory.push(engine);
+                this.inventory.push(weapon);
+                this.equip(weapon);
                 this.equip(engine);
                 this.cursors = this.game.input.keyboard.createCursorKeys();
+                this.game.input.keyboard.addKey(32).onDown.add(this.shoot.bind(this));
                 this.anchor.setTo(0.5);
                 this.game = game;
                 game.add.existing(this);
@@ -91,6 +95,11 @@ var ThreeThirty;
                     this.body.angularVelocity = 0;
                 }
             };
+            Player.prototype.shoot = function () {
+                if (this.weapon != undefined) {
+                    this.weapon.fire(this.game, this);
+                }
+            };
             Player.prototype.equip = function (item) {
                 var targetItem = null;
                 for (var i = 0; i < this.inventory.length; i++) {
@@ -105,6 +114,9 @@ var ThreeThirty;
                 }
                 if (targetItem.isEngine) {
                     this.engine = targetItem;
+                }
+                if (targetItem.isWeapon) {
+                    this.weapon = targetItem;
                 }
                 this.equipped.push(targetItem);
             };
@@ -140,6 +152,47 @@ var ThreeThirty;
 (function (ThreeThirty) {
     var Client;
     (function (Client) {
+        var DefaultWeapon = (function () {
+            function DefaultWeapon() {
+                this.fireRate = 2;
+                this.isWeapon = true;
+                this.size = 10;
+                this.equippable = true;
+            }
+            DefaultWeapon.prototype.fire = function (game, player) {
+                new Client.DefaultProjectile(game, player.x, player.y);
+            };
+            return DefaultWeapon;
+        }());
+        Client.DefaultWeapon = DefaultWeapon;
+    })(Client = ThreeThirty.Client || (ThreeThirty.Client = {}));
+})(ThreeThirty || (ThreeThirty = {}));
+var ThreeThirty;
+(function (ThreeThirty) {
+    var Client;
+    (function (Client) {
+        var DefaultProjectile = (function (_super) {
+            __extends(DefaultProjectile, _super);
+            function DefaultProjectile(game, x, y) {
+                _super.call(this, game, x, y, 'defaultProjectile');
+                this.hitdamage = 100;
+                this.game = game;
+                this.game.physics.enable(this);
+                console.log(x);
+                console.log(y);
+                this.game.add.sprite(x, y);
+            }
+            DefaultProjectile.prototype.update = function () {
+            };
+            return DefaultProjectile;
+        }(Phaser.Sprite));
+        Client.DefaultProjectile = DefaultProjectile;
+    })(Client = ThreeThirty.Client || (ThreeThirty.Client = {}));
+})(ThreeThirty || (ThreeThirty = {}));
+var ThreeThirty;
+(function (ThreeThirty) {
+    var Client;
+    (function (Client) {
         var Arena = (function (_super) {
             __extends(Arena, _super);
             function Arena() {
@@ -148,6 +201,7 @@ var ThreeThirty;
             Arena.prototype.preload = function () {
                 this.load.image("starBackground", "./assets/backgrounds/stars.png");
                 this.load.image("player", "./assets/sprites/ship.png");
+                this.load.image('defaultProjectile', "./assets/sprites/bullet.png");
             };
             Arena.prototype.create = function () {
                 this.cameraPos = new Phaser.Point(0, 0);

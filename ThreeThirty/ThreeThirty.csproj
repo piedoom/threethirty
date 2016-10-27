@@ -22,6 +22,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="build\assets\sprites\bullet.png" />
     <Content Include="build\assets\sprites\ship.png" />
     <Content Include="build\styles\default.css" />
     <Content Include="build\assets\sprites\level01-sprites.png" />
@@ -47,6 +48,10 @@
     <TypeScriptCompile Include="src\gameObjects\IItem.ts" />
     <TypeScriptCompile Include="src\gameObjects\player.ts" />
     <TypeScriptCompile Include="src\gameObjects\ships\defaultShip.ts" />
+    <TypeScriptCompile Include="src\gameObjects\weapons\defaultWeapon.ts" />
+    <TypeScriptCompile Include="src\gameObjects\weapons\IWeapon.ts" />
+    <TypeScriptCompile Include="src\gameObjects\weapons\projectiles\defaultProjectile.ts" />
+    <TypeScriptCompile Include="src\gameObjects\weapons\projectiles\IProjectile.ts" />
     <TypeScriptCompile Include="src\gameStates\boot.ts" />
     <TypeScriptCompile Include="src\gameStates\arena.ts" />
     <TypeScriptCompile Include="src\gameStates\preloader.ts" />
